@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Візуальне моделювання ПЗ | UML та Use Case Діаграми</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .actor-icon {
+            font-size: 3rem;
+            color: #4f46e5;
+        }
+        .usecase-oval {
+            border-radius: 50px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: inline-block;
+            margin: 8px;
+            font-weight: 600;
+        }
+        .connection-line {
+            border-bottom: 2px dashed #9ca3af;
+            width: 60px;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 10px;
+        }
+        .quiz-option {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            background-color: #e0e7ff;
+            transform: translateX(5px);
+        }
+        .correct { background-color: #86efac !important; border-color: #22c55e !important; }
+        .incorrect { background-color: #fca5a5 !important; border-color: #ef4444 !important; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-project-diagram text-indigo-600 text-2xl"></i>
+                <span class="font-bold text-lg text-gray-800">UML Masterclass</span>
+            </div>
+            <div class="hidden md:flex gap-6 text-sm font-medium">
+                <a href="#hook" class="hover:text-indigo-600 transition">Вступ</a>
+                <a href="#problem" class="hover:text-indigo-600 transition">Проблема</a>
+                <a href="#uml" class="hover:text-indigo-600 transition">UML</a>
+                <a href="#usecase" class="hover:text-indigo-600 transition">Use Case</a>
+                <a href="#quiz" class="hover:text-indigo-600 transition">Квіз</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-12 px-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+        <div class="max-w-4xl mx-auto text-center slide-in">
+            <div class="inline-block mb-4 px-4 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold">
+                📚 Інтерактивний урок для учнів 14-17 років
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 gradient-text leading-tight">
+                Візуальне моделювання<br>програмного забезпечення
+            </h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                Дізнайся, як професійні розробники планують застосунки ще до написання першого рядка коду
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="#hook" class="px-8 py-3 bg-indigo-600 text-white rounded-full font-semibold hover:bg-indigo-700 transition shadow-lg hover:shadow-xl">
+                    Почати урок <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOOK Section -->
+    <section id="hook" class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-indigo-500">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-lightbulb text-indigo-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">🔹 1. Яскравий вступ</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                        <p class="font-semibold text-yellow-800 mb-2">🤔 Запитання для роздумів:</p>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-question-circle text-indigo-500 mt-1"></i>
+                                <span><strong>Уяви, що ти створюєш свій застосунок</strong> — з чого почати?</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-question-circle text-indigo-500 mt-1"></i>
+                                <span>Чому великі компанії <strong>не пишуть код одразу</strong>?</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-question-circle text-indigo-500 mt-1"></i>
+                                <span>Як пояснити програму <strong>людині, яка не програмує</strong>?</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-pink-50 to-purple-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-lg mb-3 text-purple-800">📱 Життєва ситуація:</h3>
+                    <p class="text-gray-700 mb-4">
+                        Команда з 5 друзів вирішила створити аналог <strong>Instagram</strong>. 
+                        Один думає про фільтри, друг — про чати, третій — про реєстрацію...
+                    </p>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-600 italic">
+                            "Через 2 місяці вони зрозуміли, що кожен робив <span class="text-red-500 font-bold">різний</span> застосунок!"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEM Section -->
+    <section id="problem" class="py-16 px-4 bg-gray-100">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-red-500">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">🔹 2. Проблема (навіщо це потрібно)</h2>
+                </div>
+
+                <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+                    <h3 class="font-bold text-red-800 text-lg mb-3">😰 Уяви: команда з 10 людей створює застосунок без плану...</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mt-4">
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <i class="fas fa-random text-3xl text-orange-500 mb-2"></i>
+                            <p class="font-semibold text-gray-800">Хаос</p>
+                            <p class="text-sm text-gray-600">Кожен робить щось своє</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <i class="fas fa-comments text-3xl text-yellow-500 mb-2"></i>
+                            <p class="font-semibold text-gray-800">Непорозуміння</p>
+                            <p class="text-sm text-gray-600">"Я думав, це працює інакше!"</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <i class="fas fa-eye-slash text-3xl text-purple-500 mb-2"></i>
+                            <p class="font-semibold text-gray-800">Різні уявлення</p>
+                            <p class="text-sm text-gray-600">Про один і той самий продукт</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-r-xl">
+                    <p class="text-lg text-indigo-900 font-semibold">
+                        👉 Висновок: потрібна <span class="bg-indigo-200 px-2 py-1 rounded">"візуальна мова"</span> для пояснення систем — щоб усі бачили однакову картинку!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISUAL MODELING Section -->
+    <section class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-green-500">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-drafting-compass text-green-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">🔹 3. Що таке візуальне моделювання?</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 bg-orange-50 p-4 rounded-xl">
+                        <i class="fas fa-home text-4xl text-orange-500"></i>
+                        <div>
+                            <p class="font-bold text-gray-800">Як креслення для будинку</p>
+                            <p class="text-sm text-gray-600">Будівельники не починають з цегли — спочатку план!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 bg-blue-50 p-4 rounded-xl">
+                        <i class="fas fa-map text-4xl text-blue-500"></i>
+                        <div>
+                            <p class="font-bold text-gray-800">Як карта перед подорожжю</p>
+                            <p class="text-sm text-gray-600">Щоб не заблукати в деталях коду</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-lg mb-4 text-center">🏗️ Порівняння професій:</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
+                            <div class="text-center">
+                                <i class="fas fa-hard-hat text-3xl text-yellow-600"></i>
+                                <p class="text-sm font-semibold mt-1">Архітектор</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400 text-2xl"></i>
+                            <div class="text-center">
+                                <i class="fas fa-file-alt text-3xl text-blue-600"></i>
+                                <p class="text-sm font-semibold mt-1">Креслення</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
+                            <div class="text-center">
+                                <i class="fas fa-laptop-code text-3xl text-indigo-600"></i>
+                                <p class="text-sm font-semibold mt-1">Розробник</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400 text-2xl"></i>
+                            <div class="text-center">
+                                <i class="fas fa-project-diagram text-3xl text-purple-600"></i>
+                                <p class="text-sm font-semibold mt-1">UML-діаграма</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UML Section -->
+    <section id="uml" class="py-16 px-4 bg-gradient-to-br from-indigo-50 to-purple-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-purple-500">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-language text-purple-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">🔹 4. UML — простою мовою</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="bg-indigo-50 p-6 rounded-xl mb-4">
+                            <h3 class="font-bold text-indigo-900 text-lg mb-2">📖 Що таке UML?</h3>
+                            <p class="text-gray-700">
+                                <strong>Unified Modeling Language</strong> — уніфікована мова моделювання. 
+                                Це міжнародний стандарт для візуального опису програмних систем.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-purple-50 p-6 rounded-xl">
+                            <h3 class="font-bold text-purple-900 text-lg mb-2">🎯 Для чого потрібен?</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Планувати архітектуру системи</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Спілкуватися з командою</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Показувати замовнику ідею</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Знаходити помилки ще до коду</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-pink-50 to-yellow-50 p-6 rounded-xl flex flex-col justify-center items-center text-center">
+                        <div class="text-6xl mb-4">🎵</div>
+                        <h3 class="font-bold text-xl mb-3 text-gray-800">Це як:</h3>
+                        <div class="bg-white p-4 rounded-lg shadow-md w-full">
+                            <p class="text-lg text-gray-700">
+                                <span class="text-indigo-600 font-bold">UML</span> для програмістів = 
+                                <span class="text-pink-600 font-bold">ноти</span> для музикантів
+                            </p>
+                            <p class="text-sm text-gray-500 mt-2">
+                                Загальна мова, яку розуміють усі професіонали
+                            </p>
+                        </div>
+                        <div class="mt-4 flex gap-2">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-semibold">Стандарт</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">Візуальний</span>
+                            <span class="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-semibold">Міжнародний</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UML Visualization Section -->
+    <section class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-blue-500">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-eye text-blue-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">🔹 5. Візуалізація UML (проста)</h2>
+            </div>
+
+            <div class="bg-gray-900 rounded-xl p-6 mb-6 overflow-x-auto">
+                <p class="text-gray-400 text-sm mb-4 font-mono">// Приклад Use Case діаграми в текстовому форматі:</p>
+                <pre class="text-green-400 font-mono text-lg leading-relaxed">
+[Користувач]  ────►  (Увійти)
+      │
+      └────────────►  (Купити товар)
+                            │
+                            ▼
+                      (Оплатити)
+                </pre>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                    <div class="text-3xl mb-2">👤</div>
+                    <h4 class="font-bold text-indigo-900">[Користувач]</h4>
+                    <p class="text-sm text-gray-600">Актор — людина або система, яка використовує продукт</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                    <div class="text-3xl mb-2">⬭</div>
+                    <h4 class="font-bold text-purple-900">(Увійти)</h4>
+                    <p class="text-sm text-gray-600">Прецедент — дія, яку система виконує</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+                    <div class="text-3xl mb-2">→</div>
+                    <h4 class="font-bold text-green-900">───►</h4>
+                    <p class="text-sm text-gray-600">Зв'язок — показує, хто і що робить</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USE CASE Section -->
+    <section id="usecase" class="py-16 px-4 bg-gradient-to-br from-green-50 to-teal-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-teal-500">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-sitemap text-teal-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">🔹 6. Діаграми прецедентів (Use Case)</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fas fa-user-circle text-3xl text-indigo-600"></i>
+                            <h3 class="font-bold text-xl text-indigo-900">Актор (Actor)</h3>
+                        </div>
+                        <p class="text-gray-700 mb-2">Хто використовує систему?</p>
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="text-sm text-gray-600">Людина, інша програма, або навіть датчик температури!</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <i class="fas fa-oval text-3xl text-purple-600"></i>
+                            <h3 class="font-bold text-xl text-purple-900">Прецедент (Use Case)</h3>
+                        </div>
+                        <p class="text-gray-700 mb-2">Що система робить?</p>
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="text-sm text-gray-600">Сценарій використання — конкретна дія/функція</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 border border-yellow-300 rounded-xl p-6">
+                    <h3 class="font-bold text-yellow-800 mb-3 text-lg">🌍 Переклад термінів:</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="bg-white px-4 py-2 rounded-lg shadow-sm flex items-center gap-2">
+                            <span class="text-gray-500 font-mono">Actor</span>
+                            <i class="fas fa-arrow-right text-gray-400"></i>
+                            <span class="font-bold text-indigo-700">Актор</span>
+                        </div>
+                        <div class="bg-white px-4 py-2 rounded-lg shadow-sm flex items-center gap-2">
+                            <span class="text-gray-500 font-mono">Use Case</span>
+                            <i class="fas fa-arrow-right text-gray-400"></i>
+                            <span class="font-bold text-purple-700">Прецедент</span>
+                        </div>
+                        <div class="bg-white px-4 py-2 rounded-lg shadow-sm flex items-center gap-2">
+                            <span class="text-gray-500 font-mono">Association</span>
+                            <i class="fas fa-arrow-right text-gray-400"></i>
+                            <span class="font-bold text-green-700">Зв'язок</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REAL EXAMPLE Section -->
+    <section class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-orange-500">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-shopping-cart text-orange-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">🔹 7. Життєвий приклад: Онлайн-магазин 🛒</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-indigo-800">👥 Актори:</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 bg-indigo-50 p-3 rounded-lg">
+                            <i class="fas fa-user text-indigo-600 text-xl"></i>
+                            <div>
+                                <p class="font-semibold">Покупець</p>
+                                <p class="text-xs text-gray-600">Реєструється, купує, оплачує</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 bg-red-50 p-3 rounded-lg">
+                            <i class="fas fa-user-shield text-red-600 text-xl"></i>
+                            <div>
+                                <p class="font-semibold">Адміністратор</p>
+                                <p class="text-xs text-gray-600">Додає товари, керує замовленнями</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-purple-800">⬭ Прецеденти:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="usecase-oval text-sm">Зареєструватися</span>
+                        <span class="usecase-oval text-sm">Увійти</span>
+                        <span class="usecase-oval text-sm">Переглянути товари</span>
+                        <span class="usecase-oval text-sm">Купити товар</span>
+                        <span class="usecase-oval text-sm">Оплатити</span>
+                        <span class="usecase-oval text-sm">Додати товар</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border-2 border-dashed border-gray-300">
+                <h3 class="font-bold text-center mb-6 text-gray-700">📊 Текстова діаграма:</h3>
+                
+                <div class="flex flex-col items-center gap-4 font-mono text-sm md:text-base">
+                    <div class="flex items-center gap-4">
+                        <div class="text-center">
+                            <i class="fas fa-user text-3xl text-indigo-600"></i>
+                            <p class="font-bold mt-1">Покупець</p>
+                        </div>
+                        <div class="connection-line"></div>
+                        <div class="bg-indigo-600 text-white px-4 py-2 rounded-full">Перегляд товарів</div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="text-center">
+                            <i class="fas fa-user text-3xl text-indigo-600"></i>
+                            <p class="font-bold mt-1">Покупець</p>
+                        </div>
+                        <div class="connection-line"></div>
+                        <div class="bg-indigo-600 text-white px-4 py-2 rounded-full">Купити товар</div>
+                        <div class="connection-line"></div>
+                        <div class="bg-purple-600 text-white px-4 py-2 rounded-full">Оплатити</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 mt-2">
+                        <div class="text-center">
+                            <i class="fas fa-user-shield text-3xl text-red-600"></i>
+                            <p class="font-bold mt-1">Адміністратор</p>
+                        </div>
+                        <div class="connection-line"></div>
+                        <div class="bg-red-600 text-white px-4 py-2 rounded-full">Додати товар</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>На справжній діаграмі:</strong> актори — це stickman (людина-паличка), прецеденти — овали, а зв'язки — лінії.
+                    ![Приклад Use Case діаграми онлайн-магазину](https://www.uml-diagrams.org/examples/use-case-example-online-shopping.png)
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE Section -->
+    <section class="py-16 px-4 bg-gradient-to-br from-yellow-50 to-orange-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-yellow-500">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-hand-point-up text-yellow-600 text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">🔹 8. Інтерактив: питання до учнів</h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-gradient-to-br from-pink-50 to-rose-50 p-6 rounded-xl border border-pink-200 hover:shadow-md transition cursor-pointer" onclick="toggleAnswer(this)">
+                        <div class="text-4xl mb-3 text-center">🎵</div>
+                        <h3 class="font-bold text-center mb-3">TikTok</h3>
+                        <p class="text-sm text-gray-600 text-center mb-3">Хто буде актором у TikTok?</p>
+                        <div class="answer hidden bg-white p-3 rounded-lg mt-2">
+                            <p class="text-sm font-semibold text-pink-700">👤 Користувач, 📹 Автор контенту, 👮 Модератор</p>
+                        </div>
+                        <p class="text-xs text-center text-pink-500 mt-2 click-hint">Натисни, щоб побачити відповідь</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-red-50 to-orange-50 p-6 rounded-xl border border-red-200 hover:shadow-md transition cursor-pointer" onclick="toggleAnswer(this)">
+                        <div class="text-4xl mb-3 text-center">📺</div>
+                        <h3 class="font-bold text-center mb-3">YouTube</h3>
+                        <p class="text-sm text-gray-600 text-center mb-3">Які дії виконує користувач?</p>
+                        <div class="answer hidden bg-white p-3 rounded-lg mt-2">
+                            <p class="text-sm font-semibold text-red-700">▶️ Дивитися відео, 👍 Лайкати, 💬 Коментувати, ➕ Підписуватися</p>
+                        </div>
+                        <p class="text-xs text-center text-red-500 mt-2 click-hint">Натисни, щоб побачити відповідь</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200 hover:shadow-md transition cursor-pointer" onclick="toggleAnswer(this)">
+                        <div class="text-4xl mb-3 text-center">📝</div>
+                        <h3 class="font-bold text-center mb-3">Реєстрація</h3>
+                        <p class="text-sm text-gray-600 text-center mb-3">Чи є "реєстрація" прецедентом?</p>
+                        <div class="answer hidden bg-white p-3 rounded-lg mt-2">
+                            <p class="text-sm font-semibold text-indigo-700">✅ Так! Це дія, яку система виконує для користувача</p>
+                        </div>
+                        <p class="text-xs text-center text-indigo-500 mt-2 click-hint">Натисни, щоб побачити відповідь</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MINI TASK Section -->
+    <section class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-pink-500">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-pencil-alt text-pink-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">🔹 9. Міні-завдання ✏️</h2>
+            </div>
+
+            <div class="bg-gradient-to-r from-pink-50 to-purple-50 p-6 rounded-xl mb-6">
+                <h3 class="font-bold text-lg mb-4 text-gray-800">Створи свою діаграму для одного з варіантів:</h3>
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded-lg shadow-sm text-center hover:shadow-md transition cursor-pointer" onclick="selectTask('school')">
+                        <i class="fas fa-school text-3xl text-blue-500 mb-2"></i>
+                        <p class="font-semibold">Школа 🏫</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm text-center hover:shadow-md transition cursor-pointer" onclick="selectTask('game')">
+                        <i class="fas fa-gamepad text-3xl text-green-500 mb-2"></i>
+                        <p class="font-semibold">Гра 🎮</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm text-center hover:shadow-md transition cursor-pointer" onclick="selectTask('instagram')">
+                        <i class="fab fa-instagram text-3xl text-pink-500 mb-2"></i>
+                        <p class="font-semibold">Instagram 📸</p>
+                    </div>
+                </div>
+
+                <div id="task-template" class="bg-white p-6 rounded-xl border-2 border-dashed border-gray-300 hidden">
+                    <h4 class="font-bold text-center mb-4 text-gray-700" id="task-title">Твоя діаграма:</h4>
+                    <div class="space-y-4 max-w-md mx-auto">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Актор (хто?):</label>
+                            <input type="text" placeholder="Наприклад: Учень" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Дії (що робить?):</label>
+                            <textarea placeholder="1. Переглянути розклад&#10;2. Здати домашнє завдання..." rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+                        </div>
+                        <button class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                            <i class="fas fa-check mr-2"></i>Готово! Молодець!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MOTIVATION Section -->
+    <section class="py-16 px-4 bg-gradient-to-br from-indigo-600 to-purple-700 text-white">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="mb-8">
+                <i class="fas fa-rocket text-5xl mb-4 pulse-animation inline-block"></i>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">🔹 10. Чому це важливо?</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                    <i class="fas fa-building text-4xl mb-3 text-yellow-300"></i>
+                    <h3 class="font-bold text-xl mb-2">Реальні IT-компанії</h3>
+                    <p class="text-indigo-100">Google, Facebook, Netflix — усі використовують UML для планування</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                    <i class="fas fa-users text-4xl mb-3 text-green-300"></i>
+                    <h3 class="font-bold text-xl mb-2">Робота в команді</h3>
+                    <p class="text-indigo-100">Загальна мова для розробників, дизайнерів і менеджерів</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                    <i class="fas fa-briefcase text-4xl mb-3 text-pink-300"></i>
+                    <h3 class="font-bold text-xl mb-2">Професія мрії</h3>
+                    <p class="text-indigo-100">Перший крок до професії програміста чи системного аналітика</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUIZ Section -->
+    <section id="quiz" class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 card-hover border-l-4 border-indigo-600">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-question-circle text-indigo-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">🔹 11. Закріплення (Квіз) 🎯</h2>
+            </div>
+
+            <div class="space-y-6" id="quiz-container">
+                <!-- Question 1 -->
+                <div class="quiz-item bg-gray-50 p-6 rounded-xl border border-gray-200" data-correct="1">
+                    <p class="font-bold text-lg mb-4">1. Що таке UML?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            A. Мова програмування для створення сайтів
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, true)">
+                            B. Мова візуального моделювання програмних систем
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            C. Програма для малювання діаграм
+                        </div>
+                    </div>
+                    <div class="feedback mt-3 hidden font-semibold"></div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="quiz-item bg-gray-50 p-6 rounded-xl border border-gray-200" data-correct="2">
+                    <p class="font-bold text-lg mb-4">2. Хто такий "Актор" на діаграмі Use Case?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            A. Головний розробник проєкту
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, true)">
+                            B. Той, хто використовує систему (людина або програма)
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            C. Головний персонаж фільму
+                        </div>
+                    </div>
+                    <div class="feedback mt-3 hidden font-semibold"></div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="quiz-item bg-gray-50 p-6 rounded-xl border border-gray-200" data-correct="0">
+                    <p class="font-bold text-lg mb-4">3. Як позначається прецедент (Use Case) на діаграмі?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, true)">
+                            A. Овал (еліпс)
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            B. Прямокутник
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            C. Коло
+                        </div>
+                    </div>
+                    <div class="feedback mt-3 hidden font-semibold"></div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="quiz-item bg-gray-50 p-6 rounded-xl border border-gray-200" data-correct="1">
+                    <p class="font-bold text-lg mb-4">4. Для чого використовують діаграми прецедентів?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            A. Щоб написати програмний код
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, true)">
+                            B. Щоб показати, хто і що робить у системі
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            C. Щоб обрати кольори для дизайну
+                        </div>
+                    </div>
+                    <div class="feedback mt-3 hidden font-semibold"></div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="quiz-item bg-gray-50 p-6 rounded-xl border border-gray-200" data-correct="2">
+                    <p class="font-bold text-lg mb-4">5. Який зв'язок між "Купити товар" і "Оплатити"?</p>
+                    <div class="space-y-2">
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            A. Немає жодного зв'язку
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, false)">
+                            B. Це однакові дії
+                        </div>
+                        <div class="quiz-option bg-white p-3 rounded-lg border border-gray-300" onclick="checkAnswer(this, true)">
+                            C. Оплата зазвичай йде після покупки (зв'язок "include")
+                        </div>
+                    </div>
+                    <div class="feedback mt-3 hidden font-semibold"></div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <div id="quiz-score" class="hidden bg-indigo-100 text-indigo-800 px-6 py-3 rounded-full inline-block font-bold text-lg">
+                    Твій результат: <span id="score-value">0</span>/5 🎉
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL Section -->
+    <section class="py-16 px-4 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white text-center">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-6xl mb-6">🎓</div>
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">🔹 13. Фінал</h2>
+            <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 mb-8">
+                <p class="text-2xl md:text-3xl font-bold leading-relaxed">
+                    "Ти щойно зробив перший крок у світ професійної розробки!"
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-white/5 p-4 rounded-lg">
+                    <i class="fas fa-brain text-2xl mb-2 text-yellow-300"></i>
+                    <p>Тепер ти знаєш, що таке UML</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-lg">
+                    <i class="fas fa-project-diagram text-2xl mb-2 text-green-300"></i>
+                    <p>Вмієш читати діаграми Use Case</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-lg">
+                    <i class="fas fa-lightbulb text-2xl mb-2 text-pink-300"></i>
+                    <p>Можеш створити свою першу діаграму</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-indigo-200 text-sm">
+                <p>💡 Продовж вивчати: Class Diagrams, Sequence Diagrams, Activity Diagrams</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>© 2026 Інтерактивний урок UML | Створено для учнів 14-17 років</p>
+    </footer>
+
+    <script>
+        // Interactive functions
+        function toggleAnswer(element) {
+            const answer = element.querySelector('.answer');
+            const hint = element.querySelector('.click-hint');
+            
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                answer.classList.add('slide-in');
+                hint.textContent = '✅ Правильно! Молодець!';
+                hint.classList.remove('text-gray-400');
+                hint.classList.add('text-green-600', 'font-semibold');
+            }
+        }
+
+        function selectTask(type) {
+            const template = document.getElementById('task-template');
+            const title = document.getElementById('task-title');
+            
+            template.classList.remove('hidden');
+            template.classList.add('slide-in');
+            
+            const titles = {
+                'school': '🏫 Діаграма для школи',
+                'game': '🎮 Діаграма для гри',
+                'instagram': '📸 Діаграма для Instagram'
+            };
+            
+            title.textContent = titles[type] || 'Твоя діаграма';
+        }
+
+        let score = 0;
+        let answered = 0;
+
+        function checkAnswer(element, isCorrect) {
+            const quizItem = element.closest('.quiz-item');
+            
+            // Prevent multiple answers
+            if (quizItem.querySelector('.quiz-option.correct') || quizItem.querySelector('.quiz-option.incorrect')) {
+                return;
+            }
+            
+            const options = quizItem.querySelectorAll('.quiz-option');
+            const feedback = quizItem.querySelector('.feedback');
+            
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                opt.classList.add('opacity-50');
+            });
+            
+            element.classList.remove('opacity-50');
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedback.textContent = '✅ Правильно! Молодець!';
+                feedback.classList.add('text-green-600');
+                score++;
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = '❌ Не зовсім так. Подумай ще раз!';
+                feedback.classList.add('text-red-600');
+                
+                // Show correct answer
+                options.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.remove('opacity-50');
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            feedback.classList.remove('hidden');
+            answered++;
+            
+            if (answered === 5) {
+                document.getElementById('quiz-score').classList.remove('hidden');
+                document.getElementById('score-value').textContent = score;
+                
+                if (score === 5) {
+                    document.getElementById('quiz-score').innerHTML += ' — Ідеально! 🌟';
+                } else if (score >= 3) {
+                    document.getElementById('quiz-score').innerHTML += ' — Добре! 👍';
+                } else {
+                    document.getElementById('quiz-score').innerHTML += ' — Спробуй ще раз! 💪';
+                }
+            }
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('slide-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card-hover').forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>
